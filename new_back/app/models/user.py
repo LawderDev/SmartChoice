@@ -1,13 +1,20 @@
-from .. import db
+from app.database import DB
 
-class User(db.Model):
-    __tablename__ = 'users'
+class User(object):
+    def __init__(self, id, firstname, lastname, email, password):
+        self.id = id
+        self.firstname = firstname
+        self.lastname = lastname
+        self.email = email
+        self.password = password
+        self.sessions = []
 
-    id = db.Column(db.Integer, primary_key=True)
-    firstname = db.Column(db.String(100), nullable=False)
-    lastname = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-    sessions = db.relationship('Session', backref='user', lazy=True)
-    def __repr__(self):
-        return f'<User {self.firstname, self.lastname}>'
+    def json(self):
+        return {
+            "id": self.id,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "email": self.email,
+            "password": self.password,
+            "sessions": self.sessions
+        }
